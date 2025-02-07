@@ -23,3 +23,6 @@ st.dataframe(styled_df)
 
 st.balloons()
 st.snow()
+
+e = RuntimeError("This is an exception of type RuntimeError")
+st.exception(e)
