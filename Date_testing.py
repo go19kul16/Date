@@ -15,11 +15,14 @@ def highlight_sundays(row):
     else:
         return [''] * len(row)
 
-# Apply the highlight function
-styled_df = df.style.apply(highlight_sundays, axis=1)
+agree = st.checkbox("Highlight Sundays")
 
-st.write("DataFrame with Sundays Highlighted:")
-st.dataframe(styled_df)
+if agree:
+    # Apply the highlight function
+    styled_df = df.style.apply(highlight_sundays, axis=1)
+    
+    st.write("DataFrame with Sundays Highlighted:")
+    st.dataframe(styled_df)
 
 st.balloons()
 st.snow()
