@@ -21,3 +21,5 @@ styled_df = df.style.apply(highlight_sundays, axis=1)
 st.write("DataFrame with Sundays Highlighted:")
 st.dataframe(styled_df)
 
+st.balloons()
+
