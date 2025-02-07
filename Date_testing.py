@@ -22,4 +22,4 @@ st.write("DataFrame with Sundays Highlighted:")
 st.dataframe(styled_df)
 
 st.balloons()
-
+st.snow()
