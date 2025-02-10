@@ -11,14 +11,15 @@ df['date'] = pd.to_datetime(df['date'])
 # Function to highlight Sundays
 def highlight_sundays(row):
     if row['date'].dayofweek == 6:  # Sunday corresponds to 6
-        return ['color: red'] * len(row)
+        if agree:
+            return ['color: red'] * len(row)
     else:
         return [''] * len(row)
 
 agree = st.checkbox("Highlight Sundays")
 styled_df = df.style.apply(highlight_sundays, axis=1)
 
-if agree:
+
     st.write("DataFrame with Sundays Highlighted:")
     st.dataframe(styled_df)
 
