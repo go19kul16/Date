@@ -49,7 +49,7 @@ def highlight_sundays(df):
     if not df.empty:
         df['Date'] = pd.to_datetime(df['Date'])  # Ensure 'Date' is in datetime format
         def color_row(date):
-            return ['background-color: red'] * len(df.columns) if date.dayofweek == 6 else [''] * len(df.columns)
+            return ['color: red'] * len(df.columns) if date.dayofweek == 6 else [''] * len(df.columns)
         styled_df = df.style.apply(lambda row: color_row(row['Date']), axis=1)
         return styled_df
     return df  # Return the original if empty to avoid errors
