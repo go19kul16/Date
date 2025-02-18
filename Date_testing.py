@@ -38,18 +38,16 @@ def load_data(username):
     except FileNotFoundError:
         data = pd.DataFrame(columns=['Date', 'Title', 'Amount'])
     return data
-
 # Function to save data to Excel for a specific user
 def save_data(data, username):
     file_name = f'expenses_{username}.xlsx'
+    # Ensure 'Date' is in datetime format
+    if not pd.api.types.is_datetime64_any_dtype(data['Date']):
+        data['Date'] = pd.to_datetime(data['Date'], errors='coerce', dayfirst=True)  # Coerce errors to NaT if necessary
+    
+    # Now we can format the 'Date' column safely
     data['Date'] = data['Date'].dt.strftime('%d-%m-%Y')  # ensure date format before saving
     data.to_excel(file_name, index=False, engine='openpyxl')
-
-# Initialize session state for authentication
-if 'authenticated' not in st.session_state:
-    st.session_state.authenticated = False
-    st.session_state.username = None
-    st.session_state.show_login = True
 
 # Signup Page
 def signup_page():
