@@ -8,9 +8,12 @@ df = pd.DataFrame(data)
 # Convert the 'date' column to datetime format
 df['date'] = pd.to_datetime(df['date'])
 
+# Format the 'date' column to dd-mm-yyyy
+df['date'] = df['date'].dt.strftime('%d-%m-%Y')
+
 # Function to highlight Sundays
 def highlight_sundays(row):
-    if row['date'].dayofweek == 6:  # Sunday corresponds to 6
+    if pd.to_datetime(row['date'], format='%d-%m-%Y').dayofweek == 6:  # Sunday corresponds to 6
         if agree:
             return ['color: red'] * len(row)
     else:
@@ -19,12 +22,9 @@ def highlight_sundays(row):
 agree = st.checkbox("Highlight Sundays")
 styled_df = df.style.apply(highlight_sundays, axis=1)
 
-
 st.write("DataFrame with Sundays Highlighted:")
 st.dataframe(styled_df)
 
-st.balloons()
-st.snow()
 
 e = RuntimeError("This is an exception of type RuntimeError")
 st.exception(e)
