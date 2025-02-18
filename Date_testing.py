@@ -24,8 +24,12 @@ def load_credentials():
 
 # Save user credentials
 def save_credentials(credentials):
-    with open("user_credentials.json", "w") as file:
-        json.dump(credentials, file)
+    try:
+        with open("user_credentials.json", "w") as file:
+            json.dump(credentials, file)
+    except Exception as e:
+        st.error(f"❌ Error saving credentials: {str(e)}")
+
 
 # Load existing credentials
 USER_CREDENTIALS = load_credentials()
@@ -77,7 +81,6 @@ def signup_page():
         else:
             st.error('❌ Please fill in all fields.')
     st.markdown(":red[**AFTER SIGNING UP PLEASE REFRESH THE PAGE**]")
-
 # Login Page
 def login_page():
     st.title('🔑 Login to Expense Tracker')
@@ -92,7 +95,7 @@ def login_page():
                     st.session_state.authenticated = True
                     st.session_state.username = username
                     st.success(f'🎉 Login successful! Welcome {username}. Redirecting...')
-                    st.rerun()
+                    st.experimental_rerun()
                 else:
                     st.error('❌ Invalid username or password. Please try again.')
             else:
@@ -100,7 +103,7 @@ def login_page():
     
     if st.button('📝 Sign Up', key='go_to_signup', help='Create a new account'):
         st.session_state.show_signup = True
-        st.rerun()
+        st.experimental_rerun()
     st.markdown(":red[**AFTER SIGNING UP PLEASE REFRESH THE PAGE**]")
 
 
