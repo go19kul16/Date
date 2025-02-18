@@ -159,3 +159,55 @@ def search_expense_page():
                 st.info('No expenses found for the selected date range.')
     else:
         st.info('Please select a search type to proceed.')
+
+def signup_page():
+    st.title('📝 Sign Up for Expense Tracker')
+    new_username = st.text_input('Choose a Username')
+    new_password = st.text_input('Choose a Password', type='password')
+    confirm_password = st.text_input('Confirm Password', type='password')
+    
+    if st.button('🎉 Create Account', key='signup_button', help='Click to create an account'):
+        if new_username and new_password and confirm_password:
+            if new_password != confirm_password:
+                st.error('❌ Passwords do not match. Please try again.')
+            elif new_username in USER_CREDENTIALS:
+                st.error('❌ Username already exists. Please choose a different one.')
+            else:
+                USER_CREDENTIALS[new_username] = hash_password(new_password)
+                save_credentials(USER_CREDENTIALS)
+                st.success('🎉 Signup successful! Redirecting to login page...')
+                
+                # Set session state to show login page
+                st.session_state.show_login = True
+                # Rerun the app to show the login page after successful signup
+                st.experimental_rerun()  # This will re-run the whole app
+                
+        else:
+            st.error('❌ Please fill in all fields.')
+    
+    st.markdown(":red[**AFTER SIGNING UP PLEASE REFRESH THE PAGE**]")
+
+
+if 'show_login' in st.session_state and st.session_state.show_login:
+    login_page()
+elif not st.session_state.authenticated:
+    login_page()
+else:
+    # If logged in, show the main menu
+    st.sidebar.title("🧭 Navigation")
+    menu = ['💰 Add Expense', '🔍 Search Expenses', '📅 Monthly Expenses', '✏️ Edit Expenses', '🗑️ Delete Expenses', '🚪 Logout']
+    choice = st.sidebar.selectbox('Select an Option', menu)
+
+    if choice == '💰 Add Expense':
+        add_expense_page()
+    elif choice == '🔍 Search Expenses':
+        search_expense_page()
+    elif choice == '📅 Monthly Expenses':
+        monthly_expense_page()
+    elif choice == '✏️ Edit Expenses':
+        edit_expense_page()
+    elif choice == '🗑️ Delete Expenses':
+        delete_expense_page()
+    elif choice == '🚪 Logout':
+        lo
+
