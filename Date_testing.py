@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 from datetime import datetime
-import io
 import matplotlib.pyplot as plt
 import seaborn as sns
 import hashlib
@@ -50,7 +49,7 @@ def save_data(data, username):
 if 'authenticated' not in st.session_state:
     st.session_state.authenticated = False
     st.session_state.username = None
-    st.session_state.show_login = False
+    st.session_state.show_login = True
 
 # Signup Page
 def signup_page():
@@ -69,10 +68,8 @@ def signup_page():
                 USER_CREDENTIALS[new_username] = hash_password(new_password)
                 save_credentials(USER_CREDENTIALS)
                 st.success('🎉 Signup successful! Redirecting to login page...')
-                st.session_state.show_login = True
-                st.session_state.authenticated = False
-                st.session_state.username = None
-                st.experimental_rerun()  # use rerun to refresh the page
+                st.session_state.show_login = False
+                st.experimental_rerun()  # Redirect to login after signup
         else:
             st.error('❌ Please fill in all fields.')
 
@@ -96,7 +93,7 @@ def login_page():
             st.error('❌ Please enter both username and password.')
     
     if st.button('📝 Sign Up'):
-        st.session_state.show_login = False
+        st.session_state.show_login = True
         st.experimental_rerun()
 
 # Logout Function
@@ -267,10 +264,13 @@ def delete_expense_page():
             st.experimental_rerun()
 
 # Navigation Logic
-if 'show_login' in st.session_state and st.session_state.show_login:
-    signup_page()
+if 'show_login' not in st.session_state:
+    st.session_state.show_login = True
+
+if st.session_state.show_login:
+    signup_page()  # Show the signup page initially
 elif not st.session_state.authenticated:
-    login_page()
+    login_page()  # Show the login page if not authenticated
 else:
     st.sidebar.title("🧭 Navigation")
     menu = ['💰 Add Expense', '🔍 Search Expenses', '📅 Monthly Expenses', '✏️ Edit Expenses', '🗑️ Delete Expenses', '🚪 Logout']
