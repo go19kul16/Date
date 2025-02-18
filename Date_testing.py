@@ -70,8 +70,10 @@ def signup_page():
                 USER_CREDENTIALS[new_username] = hash_password(new_password)
                 save_credentials(USER_CREDENTIALS)
                 st.success('🎉 Signup successful! Redirecting to login page...')
+                st.session_state.authenticated = False
                 st.session_state.show_login = True
-                st.rerun()
+                st.session_state.username = new_username  # Set the username to the signed-up user
+                st.experimental_rerun()  # Ensure rerun after signup
         else:
             st.error('❌ Please fill in all fields.')
     st.markdown(":red[**AFTER SIGNING UP PLEASE REFRESH THE PAGE**]")
